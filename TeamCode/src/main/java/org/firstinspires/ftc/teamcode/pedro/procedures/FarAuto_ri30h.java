@@ -57,19 +57,19 @@ public class FarAuto_ri30h extends LinearOpMode {
         // Perform Launch Sequence immediately
         telemetry.addLine("Status: Spooling up Launcher & Intake...");
         telemetry.update();
-        launcher.setLauncherVelocity(6000); // Full power for spool up
-        intake.runningIntake(1.0); // High power during spool up
-        sleep(2500); // Wait for spool up
+        //launcher.setLauncherVelocity(6000); // Full power for spool up
+        //intake.runningIntake(1.0); // High power during spool up
+        //sleep(2500); // Wait for spool up
 
         telemetry.addLine("Status: Launching (Switch at 0.2)...");
         telemetry.update();
         launcher.switchOpen();
-        sleep(2000); // Wait for sequence
+        //sleep(2000); // Wait for sequence
 
         telemetry.addLine("Status: Resetting Switch (Switch at 0.8)...");
         telemetry.update();
         launcher.switchClose();
-        sleep(500); // Small delay for servo reset
+        //sleep(500); // Small delay for servo reset
 
         telemetry.addLine("Status: Stopping Launcher & Intake.");
         telemetry.update();

@@ -7,10 +7,13 @@ import com.pedropathing.tuning.autotune.Inputs;
 import com.pedropathing.tuning.autotune.Procedure;
 import com.pedropathing.tuning.autotune.TuningOpMode;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.*;
 
+@Autonomous(name = "Pinpoint tuner", group = "Autonomous")
 public class PinpointTuner extends Procedure {
     enum PodType {
         SWING_ARM,
@@ -127,8 +130,8 @@ class PinpointForwardDirection extends TuningOpMode<Boolean> {
             c.name.set(name);
             c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
             c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
-            c.xPodOffset.set(0.0);
-            c.yPodOffset.set(0.0);
+            c.xPodOffset.set(6.25);
+            c.yPodOffset.set(-6.25);
             if (customPodScalar.isPresent()) {
                 c.encoderResolutionUnit.set(DistanceUnit.INCH);
                 c.ticksPerUnit.set(OptionalDouble.of(customPodScalar.getAsDouble()));

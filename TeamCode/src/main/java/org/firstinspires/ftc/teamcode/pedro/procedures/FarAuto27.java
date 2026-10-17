@@ -16,22 +16,16 @@ import static com.pedropathing.api.Paths.curve;
 import static com.pedropathing.api.Paths.line;
 
 /**
- * A simple autonomous OpMode that moves the robot forward 5 inches using Pedro Pathing.
+ * A simple autonomous OpMode for ERROR418 2026-2027 season.
  */
-@Autonomous(name = "Far auto 27 in pp", group = "Autonomous")
+@Autonomous(name = "Far Auto 27", group = "Autonomous")
 public class FarAuto27 extends LinearOpMode {
     private Follower follower;
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
-
-    private final Pose start = poseFactory.of(4 * Params.HALF_MAT + Params.CHASSIS_HALF_WIDTH, Params.CHASSIS_HALF_LENGTH, 90);
-    private final Pose path1 = poseFactory.of(4 * Params.HALF_MAT+Params.CHASSIS_HALF_WIDTH, Params.CHASSIS_HALF_LENGTH, 90);
-    private final Pose point2 = poseFactory.of(16.161, 47.5841, -178.5441);
-    private final Pose point2Control1 = poseFactory.of(47.7994, 48.5932, 0);
-    private final Pose point3 = poseFactory.of(58.8433, 131.4224, -90);
-    private final Pose point3Control1 = poseFactory.of(38.372, 98.761, 0);
-    private final Pose point4 = poseFactory.of(58.8, 129.0073, -91.027);
-    private final Pose point5 = poseFactory.of(13.2872, 94.8395, -143.1034);
+    private final Pose path1Start = poseFactory.of(56, 8, 90);
+    private final Pose path1 = poseFactory.of(34.6881, 35.1232, 180);
+    private final Pose path1Control1 = poseFactory.of(54.3529, 35.2088, 0);
 
     @Override
     public void runOpMode() {
@@ -49,13 +43,11 @@ public class FarAuto27 extends LinearOpMode {
         }
 
         // Set the starting pose.
-        follower.setPose(start);
+        follower.setPose(path1Start);
 
-        // Create paths that move to target positions.
-        Path path2 = curve(path1, point2Control1, point2).tangent();
-        Path path3 = curve(point2, point3Control1, point3).linear(point2.heading(), point3.heading());
-        Path path4 = line(point3, point4).tangent();
-        Path path5 = line(point4, point5).tangent();
+        // Create a path that moves to the target position.
+        Path forward = curve(path1Start, path1Control1, path1).linear(path1Start, path1);
+
         telemetry.addLine("Initialized. Press Play to start.");
         telemetry.update();
 
@@ -77,7 +69,7 @@ public class FarAuto27 extends LinearOpMode {
 
         telemetry.addLine("Status: Resetting Switch (Switch at 0.8)...");
         telemetry.update();
-        //launcher.switchClose();
+        launcher.switchClose();
         //sleep(500); // Small delay for servo reset
 
         telemetry.addLine("Status: Stopping Launcher & Intake.");
@@ -88,20 +80,11 @@ public class FarAuto27 extends LinearOpMode {
         // Start following the path.
         telemetry.addLine("Status: Starting Movement...");
         telemetry.update();
-        follower.follow(path2);
-        sleep(2500);
-        follower.follow(path3);
-        sleep(2500);
-        follower.follow(path5);
+        follower.follow(forward);
 
         // Update the follower until it reaches the end of the path.
-        while (opModeIsActive() && !isStopRequested()) {
+        while (opModeIsActive() && !isStopRequested() && !follower.atParametricEnd()) {
             follower.update();
-
-            // Check if the path is finished.
-            if (follower.atParametricEnd()) {
-                break;
-            }
 
             // Optional telemetry to monitor progress.
             telemetry.addData("Status", "Driving Path");
@@ -110,6 +93,13 @@ public class FarAuto27 extends LinearOpMode {
             telemetry.addData("Heading", follower.pose().heading());
             telemetry.update();
         }
+
+        //telemetry.addData("Status", "Driving Path");
+        telemetry.addData("end X", follower.pose().x());
+        telemetry.addData("end Y", follower.pose().y());
+        telemetry.addData("Heading", follower.pose().heading());
+        telemetry.addData("Expected end X: ", path1.x());
+        telemetry.addData("Expected end Y: ", path1.y());
 
         telemetry.addLine("Autonomous Complete.");
         telemetry.update();
