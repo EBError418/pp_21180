@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.procedures.robot.Launcher;
 import org.firstinspires.ftc.teamcode.pedro.procedures.robot.Intake;
+import org.firstinspires.ftc.teamcode.pedro.procedures.robot.Params;
 
 import static com.pedropathing.api.Paths.curve;
 import static com.pedropathing.api.Paths.line;
@@ -87,30 +88,25 @@ public class FarAuto27 extends LinearOpMode {
         // Start following the path.
         telemetry.addLine("Status: Starting Movement...");
         telemetry.update();
-        follower.follow(path2);
-        sleep(2500);
-        follower.follow(path3);
-        sleep(2500);
-        follower.follow(path5);
 
-        // Update the follower until it reaches the end of the path.
-        while (opModeIsActive() && !isStopRequested()) {
+        followPath(path2, "Path 2");
+        followPath(path3, "Path 3");
+        followPath(path5, "Path 5");
+
+        telemetry.addLine("Autonomous Complete.");
+        telemetry.update();
+    }
+
+    private void followPath(Path path, String pathName) {
+        follower.follow(path);
+        while (opModeIsActive() && !isStopRequested() && follower.isBusy()) {
             follower.update();
 
-            // Check if the path is finished.
-            if (follower.atParametricEnd()) {
-                break;
-            }
-
-            // Optional telemetry to monitor progress.
-            telemetry.addData("Status", "Driving Path");
+            telemetry.addData("Status", "Driving " + pathName);
             telemetry.addData("X", follower.pose().x());
             telemetry.addData("Y", follower.pose().y());
             telemetry.addData("Heading", follower.pose().heading());
             telemetry.update();
         }
-
-        telemetry.addLine("Autonomous Complete.");
-        telemetry.update();
     }
 }

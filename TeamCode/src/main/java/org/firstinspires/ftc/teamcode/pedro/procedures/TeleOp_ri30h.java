@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.pedro.procedures.robot.Intake;
 import static com.pedropathing.api.Paths.curve;
 import static com.pedropathing.api.Paths.line;
 
-@TeleOp(name = "Tele op 2027 in pp", group = "Teleop")
+@TeleOp(name = "Tele op 2027 in pp confirmed gigachad", group = "Teleop")
 public class TeleOp_ri30h extends LinearOpMode {
     private Follower follower;
     private Intake intake;
@@ -55,7 +55,7 @@ public class TeleOp_ri30h extends LinearOpMode {
                 intakeTimer.reset();
                 intake.initIntake(1.0);
             } else if (!gamepad2.a && intakeActive) {
-                // Keep running until manually stopped or toggle logic? 
+                // Keep running until manually stopped or toggle logic?
                 // Let's assume Button B stops everything.
             }
 
@@ -108,7 +108,7 @@ public class TeleOp_ri30h extends LinearOpMode {
                 launchTimer.reset();
                 launcher.setSwitchPos(0.2);
             }
-            
+
             if (launchTimer.seconds() > 1.0 && launchTimer.seconds() < 1.5) {
                 launcher.setSwitchPos(0.25);
             }
