@@ -53,7 +53,7 @@ public class TeleOp_ri30h extends LinearOpMode {
             if (gamepad2.a || gamepad1.left_bumper && !intakeActive) {
                 intakeActive = true;
                 intakeTimer.reset();
-                intake.initIntake(1.0);
+                intake.runningFrontIntake(1.0);
             } else if (!gamepad2.a && intakeActive) {
                 // Keep running until manually stopped or toggle logic?
                 // Let's assume Button B stops everything.
@@ -61,9 +61,9 @@ public class TeleOp_ri30h extends LinearOpMode {
 
             if (gamepad2.b || gamepad1.right_bumper) {
                 intakeActive = false;
-                intake.initIntake(0);
-                intake.runningIntake(0);
-                launcher.setLauncherPower(0);
+                intake.runningFrontIntake(0);
+                intake.runningBackIntake(0);
+                launcher.launcherOff();
             }
 
             if (intakeActive) {
@@ -73,45 +73,64 @@ public class TeleOp_ri30h extends LinearOpMode {
 
                 // ----- Alternate logic -----
                 double initIntakePower = launcherSpooling ? INIT_INTAKE_LOW : INIT_INTAKE_HIGH;
-                intake.initIntake(initIntakePower);
+                intake.runningFrontIntake(initIntakePower);
 
-                launcher.setLauncherVelocity(2000);
+                //launcher.setLauncherVelocity(2000);
 
                 // runningIntake power depends on launcher spooling state
                 double intakePower = launcherSpooling ? RUNNING_INTAKE_HIGH : RUNNING_INTAKE_LOW;
-                intake.runningIntake(intakePower);
+                intake.runningBackIntake(intakePower);
             }
 
             // --- Launcher Spooling (Gamepad 2 - X) ---
             if (gamepad2.x || gamepad1.dpad_left) {
                 launcherSpooling = true;
-                launcher.setLauncherVelocity(6000);
+                //launcher.setLauncherVelocity(6000);
                 sleep(2000);
                 launcher.switchOpen();
             }
             if (gamepad2.right_bumper || gamepad1.dpad_right) { // Stop launcher
                 launcherSpooling = false;
-                launcher.setLauncherVelocity(0);
+                //launcher.setLauncherVelocity(0);
                 launcher.switchClose();
             }
 
-            if (gamepad2.x) {
-                launcher.setSwitchPos(launcher.getSwitchPos() - 0.01);
+            if (gamepad1.x) {
+//                launcher.setSwitchPos(launcher.getSwitchPos() - 0.01);
+                launcher.switchClose();
             }
 
-            if (gamepad2.y) {
-                launcher.setSwitchPos(launcher.getSwitchPos() + 0.01);
+            if (gamepad1.y) {
+//                launcher.setSwitchPos(launcher.getSwitchPos() + 0.01);
+                launcher.switchOpen();
+            }
+
+            if (gamepad1.a) {
+                intake.runningFrontIntake(0.8);
+                intake.runningBackIntake(0.8);
+            }
+            if (gamepad1.b) {
+                intake.runningFrontIntake(0);
+                intake.runningBackIntake(0);
+            }
+
+            if (gamepad1.dpad_up) {
+                launcher.launcherOn();
+            }
+
+            if (gamepad1.dpad_down) {
+                launcher.launcherOff();
             }
 
             // --- Launch Sequence (Gamepad 2 - Y) ---
             if (gamepad2.y) {
                 launchTimer.reset();
-                launcher.setSwitchPos(0.2);
+                //launcher.setSwitchPos(0.2);
             }
-
-            if (launchTimer.seconds() > 1.0 && launchTimer.seconds() < 1.5) {
-                launcher.setSwitchPos(0.25);
-            }
+//
+//            if (launchTimer.seconds() > 1.0 && launchTimer.seconds() < 1.5) {
+//                launcher.switchClose();
+//            }
 
             telemetry.addData("Intake Active", intakeActive);
             telemetry.addData("Launcher Spooling", launcherSpooling);
@@ -119,6 +138,8 @@ public class TeleOp_ri30h extends LinearOpMode {
             telemetry.addData("Y", follower.pose().y());
             telemetry.addData("Heading", follower.pose().heading());
             telemetry.addData("Switch pos", launcher.getSwitchPos());
+            telemetry.addData("Launcher power", launcher.getLauncherPower());
+            telemetry.addData("Launcher velocity", launcher.getLauncherVelocity());
             telemetry.update();
         }
     }

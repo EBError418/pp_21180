@@ -82,8 +82,8 @@ public class FarAuto27 extends LinearOpMode {
 
         telemetry.addLine("Status: Stopping Launcher & Intake.");
         telemetry.update();
-        launcher.setLauncherPower(0.0);
-        intake.runningIntake(0.0);
+        //launcher.setLauncherPower(0.0);
+        intake.runningFrontIntake(0.0);
 
         // Start following the path.
         telemetry.addLine("Status: Starting Movement...");

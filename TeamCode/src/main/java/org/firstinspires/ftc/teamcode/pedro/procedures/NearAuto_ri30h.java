@@ -61,8 +61,8 @@ public class NearAuto_ri30h extends LinearOpMode {
         // Launch Sequence
         telemetry.addLine("Status: Spooling up Launcher & Intake...");
         telemetry.update();
-        launcher.setLauncherVelocity(6000);
-        intake.runningIntake(1.0); // High power during spool up
+        //launcher.setLauncherVelocity(6000);
+        intake.runningFrontIntake(1.0); // High power during spool up
         sleep(2500);
 
         telemetry.addLine("Status: Launching (Switch at 0.2)...");
@@ -77,8 +77,8 @@ public class NearAuto_ri30h extends LinearOpMode {
 
         telemetry.addLine("Status: Stopping Launcher & Intake.");
         telemetry.update();
-        launcher.setLauncherVelocity(0);
-        intake.runningIntake(0.0);
+        //launcher.setLauncherVelocity(0);
+        intake.runningFrontIntake(0.0);
 
         // Start following the path.
         telemetry.addLine("Status: Starting Movement...");

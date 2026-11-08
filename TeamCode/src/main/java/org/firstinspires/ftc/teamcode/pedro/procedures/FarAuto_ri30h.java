@@ -73,8 +73,8 @@ public class FarAuto_ri30h extends LinearOpMode {
 
         telemetry.addLine("Status: Stopping Launcher & Intake.");
         telemetry.update();
-        launcher.setLauncherPower(0.0);
-        intake.runningIntake(0.0);
+        launcher.launcherOff();
+        intake.runningFrontIntake(0.0);
 
         // Start following the path.
         telemetry.addLine("Status: Starting Movement...");

@@ -15,27 +15,27 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Intake {
 
     //hardware
-    DcMotor initIntakeMotor;
-    DcMotor runningIntakeMotor;
+    DcMotor intakeLeft;
+    DcMotor intakeRight;
 
     public Intake(HardwareMap hardwareMap) {
-        initIntakeMotor = hardwareMap.get(DcMotor.class, "intakeL");
-        runningIntakeMotor = hardwareMap.get(DcMotor.class, "intakeR");
+        intakeLeft = hardwareMap.get(DcMotor.class, "intakeL");
+        intakeRight = hardwareMap.get(DcMotor.class, "intakeR");
     }
 
-    public void initIntake(double power) {
-        initIntakeMotor.setPower(-power);
+    public void runningFrontIntake(double power) {
+        intakeLeft.setPower(-power);
     }
 
-    public void runningIntake(double power) {
-        runningIntakeMotor.setPower(-power);
+    public void runningBackIntake(double power) {
+        intakeRight.setPower(-power);
     }
 
-    public double getInitIntakePower() {
-        return initIntakeMotor.getPower();
+    public double getRightIntakePower() {
+        return intakeRight.getPower();
     }
 
-    public double getRunningIntakePower() {
-        return runningIntakeMotor.getPower();
+    public double getLeftIntakePower() {
+        return intakeRight.getPower();
     }
 }
